@@ -143,7 +143,7 @@ function RevealBox({ children, delay = 0 }) {
   );
 }
 
-// প্রো-লেভেল স্পটলাইট + থ্রি-ডি টিল্ট প্রজেক্ট কার্ড (টাচ ডিভাইসে স্মুথ)
+// প্রো-লেভেল স্পটলাইট + থ্রি-ডি টিল্ট প্রজেক্ট কার্ড
 function SpotlightProjectCard({ children, isLight }) {
   const [transformStyle, setTransformStyle] = useState(
     'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)'
@@ -233,6 +233,116 @@ function WhatsAppIcon({ color = '#25d366', size = 16 }) {
       <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67ZM8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7 8.5 7 9.71C7 10.93 7.89 12.1 8 12.27C8.14 12.44 9.76 14.94 12.25 16C12.84 16.27 13.3 16.42 13.66 16.53C14.25 16.72 14.79 16.69 15.22 16.63C15.7 16.56 16.68 16.03 16.89 15.45C17.1 14.87 17.1 14.38 17.04 14.27C16.97 14.17 16.81 14.11 16.56 14C16.31 13.86 15.09 13.26 14.87 13.18C14.64 13.1 14.5 13.06 14.31 13.3C14.15 13.55 13.67 14.11 13.53 14.27C13.38 14.44 13.24 14.46 13 14.34C12.74 14.21 11.94 13.95 11 13.11C10.26 12.45 9.77 11.64 9.62 11.39C9.5 11.15 9.61 11 9.73 10.89C9.84 10.78 10 10.6 10.1 10.45C10.23 10.31 10.27 10.2 10.35 10.04C10.43 9.87 10.39 9.73 10.33 9.61C10.27 9.5 9.77 8.26 9.56 7.77C9.36 7.29 9.16 7.35 9 7.34C8.86 7.34 8.7 7.33 8.53 7.33Z" />
     </svg>
   );
+}
+
+// অরিজিনাল ব্র্যান্ড ও স্কিল SVG লোগো
+function SkillLogo({ type }) {
+  const boxStyle = {
+    width: '38px',
+    height: '38px',
+    borderRadius: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    background: 'rgba(148, 163, 184, 0.1)',
+    border: '1px solid var(--card-border)',
+  };
+
+  switch (type) {
+    case 'python':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <path fill="#3776AB" d="M11.9 2C7.4 2 7.7 3.9 7.7 3.9v2h4.3v.6H6S3 6.2 3 10.6c0 4.4 2.6 4.2 2.6 4.2h1.6v-2.1s-.1-2.6 2.5-2.6h4.2s2.4.1 2.4-2.3V4.3S16.7 2 11.9 2zm-2.3 1.4c.4 0 .8.3.8.8s-.3.8-.8.8-.8-.3-.8-.8.4-.8.8-.8z"/>
+            <path fill="#FFD43B" d="M12.1 22c4.5 0 4.2-1.9 4.2-1.9v-2H12v-.6h6s3 .3 3-4.1c0-4.4-2.6-4.2-2.6-4.2h-1.6v2.1s.1 2.6-2.5 2.6h-4.2s-2.4-.1-2.4 2.3v3.5S7.3 22 12.1 22zm2.3-1.4c-.4 0-.8-.3-.8-.8s.3-.8.8-.8.8.3.8.8-.4.8-.8.8z"/>
+          </svg>
+        </div>
+      );
+    case 'html':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <path fill="#E34F26" d="M4 3l1.5 16.5L12 21.5l6.5-2L20 3H4zm12.8 5.2H9.3l.2 2.3h7.1l-.6 6.2-4 1.1-4-1.1-.3-3.1h2.1l.2 1.6 2 .5 2-.5.2-2.4H7.5l-.6-6.3h10.1l-.2 2.1z"/>
+          </svg>
+        </div>
+      );
+    case 'css':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <path fill="#1572B6" d="M4 3l1.5 16.5L12 21.5l6.5-2L20 3H4zm12.6 5.2l-.5 5.4.1.1-.4 3.4-3.8 1.1-3.8-1.1-.3-2.9h2.1l.1 1.4 1.9.5 1.9-.5.2-2.2H8.4l-.2-2h6.1l.2-2H7.9l-.2-2h9.1l-.2.8z"/>
+          </svg>
+        </div>
+      );
+    case 'tailwind':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <path fill="#06B6D4" d="M12 6c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.09 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C15.61 7.15 14.5 6 12 6zM7 12c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.09 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C10.61 13.15 9.5 12 7 12z"/>
+          </svg>
+        </div>
+      );
+    case 'word':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="3" fill="#2B579A"/>
+            <text x="12" y="16.5" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="bold" fontFamily="Arial">W</text>
+          </svg>
+        </div>
+      );
+    case 'excel':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="3" fill="#217346"/>
+            <text x="12" y="16.5" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="bold" fontFamily="Arial">X</text>
+          </svg>
+        </div>
+      );
+    case 'ppt':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="3" fill="#D24726"/>
+            <text x="12" y="16.5" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="bold" fontFamily="Arial">P</text>
+          </svg>
+        </div>
+      );
+    case 'problem':
+      return (
+        <div style={boxStyle}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c084fc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>
+          </svg>
+        </div>
+      );
+    case 'comm':
+      return (
+        <div style={boxStyle}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+      );
+    case 'bn':
+      return (
+        <div style={boxStyle}>
+          <span style={{ fontSize: '15px', fontWeight: 800, color: '#10b981' }}>অ</span>
+        </div>
+      );
+    case 'en':
+      return (
+        <div style={boxStyle}>
+          <span style={{ fontSize: '13px', fontWeight: 800, color: '#38bdf8' }}>EN</span>
+        </div>
+      );
+    default:
+      return null;
+  }
 }
 
 function App() {
@@ -1523,16 +1633,19 @@ function App() {
           {skillTab === 'tech' && (
             <div className="skill-grid">
               {[
-                { name: 'Python', sub: 'Core Programming', pct: '82%' },
-                { name: 'HTML5', sub: 'Semantic Web Structure', pct: '95%' },
-                { name: 'CSS3', sub: 'Modern Responsive Styling', pct: '90%' },
-                { name: 'Tailwind CSS', sub: 'Utility-First Framework', pct: '92%' },
+                { icon: 'python', name: 'Python', sub: 'Core Programming', pct: '82%' },
+                { icon: 'html', name: 'HTML5', sub: 'Semantic Web Structure', pct: '95%' },
+                { icon: 'css', name: 'CSS3', sub: 'Modern Responsive Styling', pct: '90%' },
+                { icon: 'tailwind', name: 'Tailwind CSS', sub: 'Utility-First Framework', pct: '92%' },
               ].map((s) => (
                 <div key={s.name} className="glass-card">
                   <div className="skill-top">
-                    <div>
-                      <div className="skill-name">{s.name}</div>
-                      <div className="skill-sub">{s.sub}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
+                      <SkillLogo type={s.icon} />
+                      <div>
+                        <div className="skill-name">{s.name}</div>
+                        <div className="skill-sub">{s.sub}</div>
+                      </div>
                     </div>
                     <span className="skill-pct">{s.pct}</span>
                   </div>
@@ -1547,15 +1660,18 @@ function App() {
           {skillTab === 'tools' && (
             <div className="skill-grid">
               {[
-                { name: 'Microsoft Word', sub: 'Documents & Academic Reports', pct: '92%' },
-                { name: 'Microsoft Excel', sub: 'Spreadsheets & Data Analysis', pct: '85%' },
-                { name: 'Microsoft PowerPoint', sub: 'Presentations & Pitch Decks', pct: '90%' },
+                { icon: 'word', name: 'Microsoft Word', sub: 'Documents & Academic Reports', pct: '92%' },
+                { icon: 'excel', name: 'Microsoft Excel', sub: 'Spreadsheets & Data Analysis', pct: '85%' },
+                { icon: 'ppt', name: 'Microsoft PowerPoint', sub: 'Presentations & Pitch Decks', pct: '90%' },
               ].map((s) => (
                 <div key={s.name} className="glass-card">
                   <div className="skill-top">
-                    <div>
-                      <div className="skill-name">{s.name}</div>
-                      <div className="skill-sub">{s.sub}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
+                      <SkillLogo type={s.icon} />
+                      <div>
+                        <div className="skill-name">{s.name}</div>
+                        <div className="skill-sub">{s.sub}</div>
+                      </div>
                     </div>
                     <span className="skill-pct">{s.pct}</span>
                   </div>
@@ -1570,16 +1686,19 @@ function App() {
           {skillTab === 'soft' && (
             <div className="skill-grid">
               {[
-                { name: 'Analytical Problem-Solving', sub: 'Critical Thinking & Logic', pct: '90%' },
-                { name: 'Technical Communication', sub: 'Documentation & Teamwork', pct: '88%' },
-                { name: 'Bengali (Native)', sub: 'Reading, Writing & Speaking', pct: '100%' },
-                { name: 'English (Professional)', sub: 'Working Proficiency', pct: '85%' },
+                { icon: 'problem', name: 'Analytical Problem-Solving', sub: 'Critical Thinking & Logic', pct: '90%' },
+                { icon: 'comm', name: 'Technical Communication', sub: 'Documentation & Teamwork', pct: '88%' },
+                { icon: 'bn', name: 'Bengali (Native)', sub: 'Reading, Writing & Speaking', pct: '100%' },
+                { icon: 'en', name: 'English (Professional)', sub: 'Working Proficiency', pct: '85%' },
               ].map((s) => (
                 <div key={s.name} className="glass-card">
                   <div className="skill-top">
-                    <div>
-                      <div className="skill-name">{s.name}</div>
-                      <div className="skill-sub">{s.sub}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
+                      <SkillLogo type={s.icon} />
+                      <div>
+                        <div className="skill-name">{s.name}</div>
+                        <div className="skill-sub">{s.sub}</div>
+                      </div>
                     </div>
                     <span className="skill-pct">{s.pct}</span>
                   </div>
