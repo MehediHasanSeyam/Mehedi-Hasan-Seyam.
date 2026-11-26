@@ -110,6 +110,138 @@ function ParticleNetwork({ isLight }) {
   );
 }
 
+// অ্যানিমেটেড কোড উইন্ডো (Python -> JavaScript -> HTML)
+function AnimatedDevCodeWindow() {
+  const snippets = [
+    {
+      lang: 'Python',
+      file: 'developer.py',
+      badgeBg: 'rgba(55, 118, 171, 0.2)',
+      badgeBorder: 'rgba(55, 118, 171, 0.5)',
+      badgeColor: '#38bdf8',
+      code: `developer = {
+    "name": "Mehedi Hasan Seyam",
+    "university": "IUB (Dept. of CSE)",
+    "focus": ["Frontend", "Python", "React.js"],
+    "available_for_hire": True
+}`,
+    },
+    {
+      lang: 'JavaScript',
+      file: 'developer.js',
+      badgeBg: 'rgba(247, 223, 30, 0.18)',
+      badgeBorder: 'rgba(247, 223, 30, 0.5)',
+      badgeColor: '#eab308',
+      code: `const developer = {
+  name: "Mehedi Hasan Seyam",
+  university: "IUB (Dept. of CSE)",
+  focus: ["Frontend", "Python", "React.js"],
+  availableForHire: true
+};`,
+    },
+    {
+      lang: 'HTML',
+      file: 'developer.html',
+      badgeBg: 'rgba(227, 79, 38, 0.18)',
+      badgeBorder: 'rgba(227, 79, 38, 0.5)',
+      badgeColor: '#f97316',
+      code: `<div class="developer">
+  <h1>Mehedi Hasan Seyam</h1>
+  <p>IUB (Dept. of CSE)</p>
+  <span>Frontend | Python | React.js</span>
+  <meta name="hire" content="true" />
+</div>`,
+    },
+  ];
+
+  const [index, setIndex] = useState(0);
+  const [typed, setTyped] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const fullCode = snippets[index].code;
+    let timeout;
+
+    if (!deleting && typed.length < fullCode.length) {
+      timeout = setTimeout(() => {
+        setTyped(fullCode.slice(0, typed.length + 1));
+      }, 26);
+    } else if (!deleting && typed.length === fullCode.length) {
+      timeout = setTimeout(() => {
+        setDeleting(true);
+      }, 2000);
+    } else if (deleting && typed.length > 0) {
+      timeout = setTimeout(() => {
+        setTyped(fullCode.slice(0, typed.length - 1));
+      }, 10);
+    } else if (deleting && typed.length === 0) {
+      setDeleting(false);
+      setIndex((prev) => (prev + 1) % snippets.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [typed, deleting, index]);
+
+  const current = snippets[index];
+
+  // সিনট্যাক্স হাইলাইটিং ফাংশন
+  const renderHighlightedCode = (text) => {
+    const tokens = text.split(/(".*?"|\b(?:const|True|true|developer|name|university|focus|availableForHire|available_for_hire)\b|<\/?[a-zA-Z0-9-]+|\/?>|\b(?:class|content)=)/g);
+    return tokens.map((part, i) => {
+      if (!part) return null;
+      if (part.startsWith('"') && part.endsWith('"')) {
+        return <span key={i} className="c-str">{part}</span>;
+      }
+      if (/^(const|True|true)$/.test(part)) {
+        return <span key={i} className="c-kw">{part}</span>;
+      }
+      if (/^(developer|<\/?[a-zA-Z0-9-]+|\/?>)$/.test(part)) {
+        return <span key={i} className="c-var">{part}</span>;
+      }
+      if (/^(name|university|focus|availableForHire|available_for_hire|class=|content=)$/.test(part)) {
+        return <span key={i} className="c-key">{part}</span>;
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
+  return (
+    <div className="code-window" style={{ minHeight: '215px', display: 'flex', flexDirection: 'column' }}>
+      <div className="code-bar">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div className="win-dots">
+            <span className="win-dot" style={{ background: '#ef4444' }} />
+            <span className="win-dot" style={{ background: '#f59e0b' }} />
+            <span className="win-dot" style={{ background: '#10b981' }} />
+          </div>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{current.file}</span>
+        </div>
+
+        <span
+          style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            padding: '2px 10px',
+            borderRadius: '999px',
+            background: current.badgeBg,
+            border: `1px solid ${current.badgeBorder}`,
+            color: current.badgeColor,
+            letterSpacing: '0.4px',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          {current.lang}
+        </span>
+      </div>
+
+      <div className="code-body" style={{ whiteSpace: 'pre-wrap', flex: 1 }}>
+        {renderHighlightedCode(typed)}
+        <span className="cursor-blink">|</span>
+      </div>
+    </div>
+  );
+}
+
 // স্ক্রল করলে কার্ডগুলো নিচ থেকে ভেসে ওঠার কম্পোনেন্ট
 function RevealBox({ children, delay = 0 }) {
   const [visible, setVisible] = useState(false);
@@ -259,6 +391,15 @@ function SkillLogo({ type }) {
           </svg>
         </div>
       );
+    case 'js':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="3" fill="#F7DF1E"/>
+            <text x="13.5" y="17.5" textAnchor="middle" fill="#000" fontSize="10.5" fontWeight="900" fontFamily="Arial">JS</text>
+          </svg>
+        </div>
+      );
     case 'html':
       return (
         <div style={boxStyle}>
@@ -280,6 +421,17 @@ function SkillLogo({ type }) {
         <div style={boxStyle}>
           <svg width="22" height="22" viewBox="0 0 24 24">
             <path fill="#06B6D4" d="M12 6c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.09 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C15.61 7.15 14.5 6 12 6zM7 12c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.09 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C10.61 13.15 9.5 12 7 12z"/>
+          </svg>
+        </div>
+      );
+    case 'react':
+      return (
+        <div style={boxStyle}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="2.2" fill="#61DAFB"/>
+            <ellipse cx="12" cy="12" rx="9.5" ry="3.8" stroke="#61DAFB" strokeWidth="1.4"/>
+            <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(60 12 12)" stroke="#61DAFB" strokeWidth="1.4"/>
+            <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(120 12 12)" stroke="#61DAFB" strokeWidth="1.4"/>
           </svg>
         </div>
       );
@@ -318,13 +470,54 @@ function SkillLogo({ type }) {
           </svg>
         </div>
       );
+    case 'analytical':
+      return (
+        <div style={boxStyle}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+          </svg>
+        </div>
+      );
     case 'comm':
       return (
         <div style={boxStyle}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+      );
+    case 'team':
+      return (
+        <div style={boxStyle}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
             <circle cx="9" cy="7" r="4"/>
             <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+      );
+    case 'time':
+      return (
+        <div style={boxStyle}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+      );
+    case 'adapt':
+      return (
+        <div style={boxStyle}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+        </div>
+      );
+    case 'learn':
+      return (
+        <div style={boxStyle}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
           </svg>
         </div>
       );
@@ -362,7 +555,7 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState('hero');
   const [selectedFilter, setSelectedFilter] = useState('All');
-  const [skillTab, setSkillTab] = useState('tech');
+  const [skillTab, setSkillTab] = useState('prog');
   const [cmdOpen, setCmdOpen] = useState(false);
   const [cmdQuery, setCmdQuery] = useState('');
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -529,6 +722,60 @@ function App() {
     { id: 'section-projects', label: 'Projects' },
     { id: 'section-contact', label: 'Contact' },
   ];
+
+  // ৫টি আপডেট করা স্কিল ও ল্যাঙ্গুয়েজ ক্যাটাগরি
+  const skillCategories = [
+    {
+      id: 'prog',
+      label: '1. Programming Languages',
+      items: [
+        { icon: 'python', name: 'Python', level: 'Beginner', pct: '45%' },
+        { icon: 'js', name: 'JavaScript', level: 'Beginner (Learning)', pct: '40%' },
+      ],
+    },
+    {
+      id: 'web',
+      label: '2. Web Development',
+      items: [
+        { icon: 'html', name: 'HTML5', level: 'Intermediate', pct: '75%' },
+        { icon: 'css', name: 'CSS3', level: 'Intermediate', pct: '72%' },
+        { icon: 'tailwind', name: 'Tailwind CSS', level: 'Intermediate', pct: '70%' },
+        { icon: 'react', name: 'React.js', level: 'Beginner (Learning)', pct: '40%' },
+      ],
+    },
+    {
+      id: 'tools',
+      label: '3. Productivity Tools',
+      items: [
+        { icon: 'word', name: 'Microsoft Word', level: 'Intermediate', pct: '75%' },
+        { icon: 'excel', name: 'Microsoft Excel', level: 'Beginner', pct: '45%' },
+        { icon: 'ppt', name: 'Microsoft PowerPoint', level: 'Intermediate', pct: '75%' },
+      ],
+    },
+    {
+      id: 'soft',
+      label: '4. Soft & Professional Skills',
+      items: [
+        { icon: 'problem', name: 'Problem-Solving Skills', level: 'Core Competency', pct: '85%' },
+        { icon: 'analytical', name: 'Analytical Thinking', level: 'Core Competency', pct: '85%' },
+        { icon: 'comm', name: 'Communication Skills', level: 'Core Competency', pct: '88%' },
+        { icon: 'team', name: 'Teamwork & Collaboration', level: 'Core Competency', pct: '90%' },
+        { icon: 'time', name: 'Time Management', level: 'Core Competency', pct: '85%' },
+        { icon: 'adapt', name: 'Adaptability', level: 'Core Competency', pct: '90%' },
+        { icon: 'learn', name: 'Continuous Learning', level: 'Core Competency', pct: '95%' },
+      ],
+    },
+    {
+      id: 'lang',
+      label: '5. Languages',
+      items: [
+        { icon: 'bn', name: 'Bengali', level: 'Native', pct: '100%' },
+        { icon: 'en', name: 'English', level: 'Proficient', pct: '85%' },
+      ],
+    },
+  ];
+
+  const activeSkillGroup = skillCategories.find((cat) => cat.id === skillTab) || skillCategories[0];
 
   return (
     <div className={`portfolio-root ${isLight ? 'light-mode' : 'dark-mode'}`}>
@@ -1069,7 +1316,7 @@ function App() {
 
         .tab-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
         .tab-btn {
-          padding: 8px 14px;
+          padding: 8px 13px;
           border-radius: 10px;
           font-size: 12px;
           font-weight: 600;
@@ -1086,14 +1333,22 @@ function App() {
         }
         .skill-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
           gap: 12px;
           animation: fadeSlideIn 0.4s ease;
         }
-        .skill-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .skill-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
         .skill-name { font-size: 14px; font-weight: 700; color: var(--text-main); }
-        .skill-sub { font-size: 11px; color: var(--text-muted); }
-        .skill-pct { font-size: 12px; font-family: monospace; color: #0891b2; font-weight: 700; }
+        .skill-level-pill {
+          font-size: 11px;
+          font-weight: 600;
+          padding: 3px 9px;
+          border-radius: 999px;
+          background: var(--pill-bg);
+          border: 1px solid rgba(147, 51, 234, 0.3);
+          color: var(--pill-text);
+          white-space: nowrap;
+        }
         .bar-bg { width: 100%; height: 6px; background: rgba(148, 163, 184, 0.22); border-radius: 999px; overflow: hidden; }
         .bar-fill {
           height: 100%;
@@ -1248,9 +1503,6 @@ function App() {
         }
         .back-top:hover { transform: translateY(-4px) scale(1.08); }
 
-        /* =========================================
-           মোবাইল ভিউ স্পেশাল রেসপন্সিভ অপ্টিমাইজেশন
-           ========================================= */
         @media (max-width: 640px) {
           .nav-inner { padding: 12px 16px; }
           .brand { font-size: 17px; }
@@ -1476,13 +1728,13 @@ function App() {
             </div>
           </div>
 
-          <div className="avatar-wrapper" onClick={() => setLightboxImg('profile.jpeg')}>
+          <div className="avatar-wrapper" onClick={() => setLightboxImg(`${process.env.PUBLIC_URL}/profile.jpeg`)}>
             <div className="floating-chip chip-top">B.Sc. in CSE @ IUB</div>
             <div className="floating-chip chip-bottom">5+ Web Projects</div>
             <div className="avatar-glow" />
             <div className="avatar-box">
               <img
-                src="profile.jpeg"
+                src={`${process.env.PUBLIC_URL}/profile.jpeg`}
                 alt="Mehedi Hasan Seyam"
                 onError={(e) => {
                   e.target.src = 'https://via.placeholder.com/300x400/0b1021/c084fc?text=Mehedi+Hasan+Seyam';
@@ -1492,27 +1744,10 @@ function App() {
           </div>
         </section>
 
-        {/* ডেভেলপার কোড উইজেট ও কুইক স্ট্যাটস */}
+        {/* ডেভেলপার কোড উইজেট (Python -> JavaScript -> HTML) ও কুইক স্ট্যাটস */}
         <RevealBox>
           <div className="dev-showcase">
-            <div className="code-window">
-              <div className="code-bar">
-                <div className="win-dots">
-                  <span className="win-dot" style={{ background: '#ef4444' }} />
-                  <span className="win-dot" style={{ background: '#f59e0b' }} />
-                  <span className="win-dot" style={{ background: '#10b981' }} />
-                </div>
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>developer.config.js</span>
-              </div>
-              <div className="code-body">
-                <div><span className="c-kw">const</span> <span className="c-var">developer</span> = {'{'}</div>
-                <div style={{ paddingLeft: '14px' }}><span className="c-key">name</span>: <span className="c-str">"Mehedi Hasan Seyam"</span>,</div>
-                <div style={{ paddingLeft: '14px' }}><span className="c-key">university</span>: <span className="c-str">"IUB (Dept. of CSE)"</span>,</div>
-                <div style={{ paddingLeft: '14px' }}><span className="c-key">focus</span>: [<span className="c-str">"Frontend"</span>, <span className="c-str">"Python"</span>, <span className="c-str">"UI/UX"</span>],</div>
-                <div style={{ paddingLeft: '14px' }}><span className="c-key">availableForHire</span>: <span className="c-kw">true</span></div>
-                <div>{'}'};</div>
-              </div>
-            </div>
+            <AnimatedDevCodeWindow />
 
             <div className="stats-grid">
               <div className="stat-box">
@@ -1524,7 +1759,7 @@ function App() {
                 <span className="stat-lbl">B.Sc. CSE CGPA</span>
               </div>
               <div className="stat-box">
-                <span className="stat-num">06+</span>
+                <span className="stat-num">09+</span>
                 <span className="stat-lbl">Core Tech & Tools</span>
               </div>
               <div className="stat-box">
@@ -1618,97 +1853,34 @@ function App() {
           <RevealBox>
             <div className="sec-label">04. Skills & Languages</div>
             <div className="tab-bar">
-              <button className={`tab-btn ${skillTab === 'tech' ? 'active' : ''}`} onClick={() => setSkillTab('tech')}>
-                Programming & Web
-              </button>
-              <button className={`tab-btn ${skillTab === 'tools' ? 'active' : ''}`} onClick={() => setSkillTab('tools')}>
-                Productivity Tools
-              </button>
-              <button className={`tab-btn ${skillTab === 'soft' ? 'active' : ''}`} onClick={() => setSkillTab('soft')}>
-                Soft & Language Skills
-              </button>
+              {skillCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className={`tab-btn ${skillTab === cat.id ? 'active' : ''}`}
+                  onClick={() => setSkillTab(cat.id)}
+                >
+                  {cat.label}
+                </button>
+              ))}
             </div>
           </RevealBox>
 
-          {skillTab === 'tech' && (
-            <div className="skill-grid">
-              {[
-                { icon: 'python', name: 'Python', sub: 'Core Programming', pct: '82%' },
-                { icon: 'html', name: 'HTML5', sub: 'Semantic Web Structure', pct: '95%' },
-                { icon: 'css', name: 'CSS3', sub: 'Modern Responsive Styling', pct: '90%' },
-                { icon: 'tailwind', name: 'Tailwind CSS', sub: 'Utility-First Framework', pct: '92%' },
-              ].map((s) => (
-                <div key={s.name} className="glass-card">
-                  <div className="skill-top">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
-                      <SkillLogo type={s.icon} />
-                      <div>
-                        <div className="skill-name">{s.name}</div>
-                        <div className="skill-sub">{s.sub}</div>
-                      </div>
-                    </div>
-                    <span className="skill-pct">{s.pct}</span>
+          <div key={activeSkillGroup.id} className="skill-grid">
+            {activeSkillGroup.items.map((s) => (
+              <div key={s.name} className="glass-card">
+                <div className="skill-top">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
+                    <SkillLogo type={s.icon} />
+                    <div className="skill-name">{s.name}</div>
                   </div>
-                  <div className="bar-bg">
-                    <div className="bar-fill" style={{ width: s.pct }} />
-                  </div>
+                  <span className="skill-level-pill">{s.level}</span>
                 </div>
-              ))}
-            </div>
-          )}
-
-          {skillTab === 'tools' && (
-            <div className="skill-grid">
-              {[
-                { icon: 'word', name: 'Microsoft Word', sub: 'Documents & Academic Reports', pct: '92%' },
-                { icon: 'excel', name: 'Microsoft Excel', sub: 'Spreadsheets & Data Analysis', pct: '85%' },
-                { icon: 'ppt', name: 'Microsoft PowerPoint', sub: 'Presentations & Pitch Decks', pct: '90%' },
-              ].map((s) => (
-                <div key={s.name} className="glass-card">
-                  <div className="skill-top">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
-                      <SkillLogo type={s.icon} />
-                      <div>
-                        <div className="skill-name">{s.name}</div>
-                        <div className="skill-sub">{s.sub}</div>
-                      </div>
-                    </div>
-                    <span className="skill-pct">{s.pct}</span>
-                  </div>
-                  <div className="bar-bg">
-                    <div className="bar-fill" style={{ width: s.pct }} />
-                  </div>
+                <div className="bar-bg">
+                  <div className="bar-fill" style={{ width: s.pct }} />
                 </div>
-              ))}
-            </div>
-          )}
-
-          {skillTab === 'soft' && (
-            <div className="skill-grid">
-              {[
-                { icon: 'problem', name: 'Analytical Problem-Solving', sub: 'Critical Thinking & Logic', pct: '90%' },
-                { icon: 'comm', name: 'Technical Communication', sub: 'Documentation & Teamwork', pct: '88%' },
-                { icon: 'bn', name: 'Bengali (Native)', sub: 'Reading, Writing & Speaking', pct: '100%' },
-                { icon: 'en', name: 'English (Professional)', sub: 'Working Proficiency', pct: '85%' },
-              ].map((s) => (
-                <div key={s.name} className="glass-card">
-                  <div className="skill-top">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '11px' }}>
-                      <SkillLogo type={s.icon} />
-                      <div>
-                        <div className="skill-name">{s.name}</div>
-                        <div className="skill-sub">{s.sub}</div>
-                      </div>
-                    </div>
-                    <span className="skill-pct">{s.pct}</span>
-                  </div>
-                  <div className="bar-bg">
-                    <div className="bar-fill" style={{ width: s.pct }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* 05. Projects & Practical Work */}
